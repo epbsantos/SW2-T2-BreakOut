@@ -99,30 +99,38 @@
 
         function update()
         {
-
-            cursors = this.input.keyboard.createCursorKeys();
-
-            /*
-            if (cursors.left.isDown)
+            // (Keyboard) Input events
+            // Controle por setas
+            cursors = this.input.keyboard.createCursorKeys();            
+            
+            if(cursors.left.isDown && paddle.x > 52)
             {
-                paddle.setVelocityX(-160);
+                    paddle.setVelocityX(-330);   
             }
-            else if (cursors.right.isDown)
+            else if(cursors.right.isDown && paddle.x < 748)
             {
-                paddle.setVelocityX(160);
+                    paddle.setVelocityX(330);   
+
             }
-            */
+            else{
+                paddle.setVelocityX(0);
+            }
+
+            //Para cima => libera a bola
+            if (cursors.up.isDown)
+            {
+                if (ball.getData('onPaddle'))
+                {
+                    ball.setVelocity(-75, -300);
+                    ball.setData('onPaddle', false);
+                }
+            }
 
             //  Input events
             this.input.on('pointermove', function (pointer) {
 
                 //  Keep the paddle within the game
                 paddle.x = Phaser.Math.Clamp(pointer.x, 52, 748);
-
-                if (ball.getData('onPaddle'))
-                {
-                    ball.x = paddle.x;
-                }
 
             }, this);
 
@@ -137,7 +145,10 @@
 
             }, this);  
             
-            
+            if (ball.getData('onPaddle'))
+            {
+                ball.x = paddle.x;
+            }
             
             if (ball.y > 600)
             {
