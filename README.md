@@ -21,4 +21,4 @@ Referente a nota do Trabalho 2
 * TopBar com dados acima
 * _Tipos de modos:_
     * Campanha com um derteminado quantidade de level's
-    * Continua até perde todas as vidas
+    * Só acaba quando perde todas as vidas
