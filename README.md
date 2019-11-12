@@ -22,3 +22,4 @@ Referente a nota do Trabalho 2
 * _Tipos de modos:_
     * Campanha com um derteminado quantidade de level's
     * Só acaba quando perde todas as vidas
+    * Criação de blocos aleatório 
