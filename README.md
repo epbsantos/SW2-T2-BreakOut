@@ -17,3 +17,5 @@ Referente a nota do Trabalho 2
     * tamanho do pad
 * Vidas
 * Mais fases
+* Pontuação 
+* TopBar com dados acima
