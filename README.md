@@ -11,4 +11,9 @@ Referente a nota do Trabalho 2
 
 ## Sugestões de melhorias:
 
-* 
+* _Power UP:_
+    * mais bolas, 
+    * reduzir velocidade, 
+    * tamanho do pad
+* Vidas
+* Mais fases
