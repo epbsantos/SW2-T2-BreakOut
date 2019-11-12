@@ -7,3 +7,8 @@ Referente a nota do Trabalho 2
 
 
 [Tutorial para usar os comandos git no seu PC.](https://www.youtube.com/watch?v=rkXUNqg25xE)
+
+
+## Sugestões de melhorias:
+
+* 
