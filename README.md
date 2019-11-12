@@ -19,3 +19,6 @@ Referente a nota do Trabalho 2
 * Mais fases
 * Pontuação 
 * TopBar com dados acima
+* _Tipos de modos:_
+    * Campanha com um derteminado quantidade de level's
+    * Continua até perde todas as vidas
