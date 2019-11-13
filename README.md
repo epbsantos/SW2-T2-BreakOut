@@ -18,7 +18,7 @@ Referente a nota do Trabalho 2
 * Vidas
 * Rastro da bola
 * Mais fases
-* Pontuação 
+* Pontuação ** Já realizado
 * TopBar com dados acima
 * _Tipos de modos:_
     * Campanha com um derteminado quantidade de level's
