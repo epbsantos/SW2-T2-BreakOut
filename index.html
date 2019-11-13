@@ -64,6 +64,8 @@
         };
 
         var ball, bricks, paddle;
+        var scoreText;
+        var score  = 0;
 
         var game = new Phaser.Game(config);
 
@@ -74,6 +76,8 @@
 
         function create()
         {
+
+           
 
             //  Enable world bounds, but disable the floor
             this.physics.world.setBoundsCollision(true, true, true, false);
@@ -94,7 +98,8 @@
             this.physics.add.collider(ball, bricks, hitBrick, null, this);
             this.physics.add.collider(ball, paddle, hitPaddle, null, this);
           
-          
+           //Score
+           scoreText = this.add.text(16, 16, 'Pontuação: 0', { fontSize: '32px', fill: '#FFF' });
         }
 
         function update()
@@ -184,6 +189,9 @@
         function hitBrick(ball, brick)
         {
             brick.disableBody(true, true);
+           // brick.kill();
+            score += 10;
+            scoreText.setText('Pontuação: '+score);
 
             if (bricks.countActive() === 0)
             {
