@@ -60,7 +60,9 @@
             }
         };
 
-        var ball, bricks, paddle, PU_NewBall;
+        var ball, bricks, paddle;
+        var PU_NewBall;
+        var particles, emitter;
         var scoreText;
         var score  = 0;
 
@@ -96,9 +98,9 @@
             scoreText = this.add.text(16, 16, 'Pontuação: 0', { fontSize: '32px', fill: '#FFF' });
             
             //Rastro na bola (usando sprite da bola)
-            var particles = this.add.particles('assets','ball1');
+            particles = this.add.particles('assets','ball1');
 
-            var emitter = particles.createEmitter({
+            emitter = particles.createEmitter({
                 lifespan: 1000,
                 speedX: { min: -10, max: 10},
                 speedY: { min: 0, max: 45 },
