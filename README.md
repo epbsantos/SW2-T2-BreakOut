@@ -13,6 +13,7 @@ Referente a nota do Trabalho 2
 
 * Tele inicial, com os modos de jogo
 * 50% do lado de saída da bola, o código inicial s está para a esquerda
+* Blocos mais fortes (mais de 1 batida para quebrar)
 * _Power UP:_
     * mais bolas, 
     * reduzir velocidade, 
