@@ -41,10 +41,7 @@
     </style>
 </head>
 <body>
-
-
     <script>
-    
         var config = {
             type: Phaser.AUTO,
             width: 800,
@@ -76,9 +73,6 @@
 
         function create()
         {
-
-           
-
             //  Enable world bounds, but disable the floor
             this.physics.world.setBoundsCollision(true, true, true, false);
 
@@ -98,8 +92,22 @@
             this.physics.add.collider(ball, bricks, hitBrick, null, this);
             this.physics.add.collider(ball, paddle, hitPaddle, null, this);
           
-           //Score
-           scoreText = this.add.text(16, 16, 'Pontuação: 0', { fontSize: '32px', fill: '#FFF' });
+            //Score
+            scoreText = this.add.text(16, 16, 'Pontuação: 0', { fontSize: '32px', fill: '#FFF' });
+            
+            //Rastro na bola (usando sprite da bola)
+            var particles = this.add.particles('assets','ball1');
+
+            var emitter = particles.createEmitter({
+                lifespan: 1000,
+                speedX: { min: -10, max: 10},
+                speedY: { min: 0, max: 45 },
+                scale: { start: 0.8, end:  0.1 },
+                frameQuantity: 64,
+                blendMode: 'ADD'
+            });
+
+            emitter.startFollow(ball);
         }
 
         function update()
@@ -108,14 +116,13 @@
             // Controle por setas
             cursors = this.input.keyboard.createCursorKeys();            
             
-            if(cursors.left.isDown && paddle.x > 52)
+            if(cursors.left.isDown && paddle.x > 64)
             {
-                    paddle.setVelocityX(-330);   
+                    paddle.setVelocityX(-450);   
             }
-            else if(cursors.right.isDown && paddle.x < 748)
+            else if(cursors.right.isDown && paddle.x < 736)
             {
-                    paddle.setVelocityX(330);   
-
+                    paddle.setVelocityX(450);
             }
             else{
                 paddle.setVelocityX(0);
@@ -126,7 +133,7 @@
             {
                 if (ball.getData('onPaddle'))
                 {
-                    ball.setVelocity(-75, -300);
+                    ball.setVelocity(-75, -330);
                     ball.setData('onPaddle', false);
                 }
             }
@@ -144,7 +151,7 @@
 
                 if (ball.getData('onPaddle'))
                 {
-                    ball.setVelocity(-75, -300);
+                    ball.setVelocity(-75, -330);
                     ball.setData('onPaddle', false);
                 }
 
@@ -160,7 +167,6 @@
                 resetBall();
             }
         }
-
 
         function hitPaddle(ball, paddle)
         {
@@ -216,9 +222,6 @@
 
             });
         }
-       
-    
-    </script>
-    
+    </script>  
 </body>
 </html>
