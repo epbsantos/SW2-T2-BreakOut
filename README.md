@@ -17,7 +17,7 @@ Referente a nota do Trabalho 2
     * reduzir velocidade, 
     * tamanho do pad
 * ~~Vidas~~ ** Já realizado
-* ~~Rastro da bola 
+* ~~Rastro da bola~~ 
 * Mais fases
 * ~~Pontuação~~ ** Já realizado
 * TopBar com dados acima
