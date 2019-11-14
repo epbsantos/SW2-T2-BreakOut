@@ -12,6 +12,7 @@ Referente a nota do Trabalho 2
 ## Sugestões de melhorias:
 
 * Tele inicial, com os modos de jogo
+* 50% do lado de saída da bola, o código inicial s está para a esquerda
 * _Power UP:_
     * mais bolas, 
     * reduzir velocidade, 
