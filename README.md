@@ -11,14 +11,15 @@ Referente a nota do Trabalho 2
 
 ## Sugestões de melhorias:
 
+* Tele inicial, com os modos de jogo
 * _Power UP:_
     * mais bolas, 
     * reduzir velocidade, 
     * tamanho do pad
-* Vidas ** Já realizado
-* Rastro da bola 
+* ~~Vidas~~ ** Já realizado
+* ~~Rastro da bola 
 * Mais fases
-* Pontuação ** Já realizado
+* ~~Pontuação~~ ** Já realizado
 * TopBar com dados acima
 * _Tipos de modos:_
     * Campanha com um derteminado quantidade de level's
