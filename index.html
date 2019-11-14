@@ -108,6 +108,11 @@
             });
 
             emitter.startFollow(ball);
+            
+            //Vidas
+            
+            lifeCount = 2;
+            lifeText = this.add.text(640, 16, 'Vidas: 2', { fontSize: '32px', fill: '#FFF'});
         }
 
         function update()
@@ -162,10 +167,27 @@
                 ball.x = paddle.x;
             }
             
-            if (ball.y > 600)
+            if (ball.y > 600 && lifeCount >= 0) // modifiquei essa condicional para utilizar o sistema de vidas;
             {
                 resetBall();
+                lifeCount --; //decrementa o contador cada vez que a bola estiver na posição y > 600;
+                lifeText.setText('Vidas: '+lifeCount); // altera o texto do contador de vidas;
+                
             }
+            
+            if (lifeCount < 0) { // modifiquei aqui também para resetar tudo;
+                
+                resetLevel();
+                resetBall();
+                
+                lifeCount = 2; //reseta o contador de vida
+                lifeText.setText('Vidas: '+ lifeCount);
+                
+                score = 0; //reseta a pontuação
+                scoreText.setText('Pontuação: ' +score);
+            }
+            
+            
         }
 
         function hitPaddle(ball, paddle)
@@ -222,6 +244,24 @@
 
             });
         }
+        
+ //        function lives(ball) {
+ //           
+ //           lifeCount = 2;
+  //          
+ //            if (ball.y > 600 && lifeCount >= 0)
+ //           {
+  //              lifeCount --;
+ //               lifeText.setText('Vidas: '+lifeCount);
+ //               resetBall();
+ //           } else {
+ //               
+  //              resetLevel();
+ //           }
+ //           
+ //       }
+        
+       
     </script>  
 </body>
 </html>
