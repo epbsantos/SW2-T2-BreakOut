@@ -60,7 +60,7 @@
             }
         };
 
-        var ball, bricks, paddle;
+        var ball, bricks, paddle, PU_NewBall;
         var scoreText;
         var score  = 0;
 
@@ -156,7 +156,12 @@
 
                 if (ball.getData('onPaddle'))
                 {
-                    ball.setVelocity(-75, -330);
+                    if( Math.random() > 0.5 ) 
+                    {
+                        ball.setVelocity(-75, -300);
+                    } else {
+                        ball.setVelocity(75, -300)
+                    }
                     ball.setData('onPaddle', false);
                 }
 
@@ -220,11 +225,53 @@
            // brick.kill();
             score += 10;
             scoreText.setText('Pontuação: '+score);
+            
+            // PowerUp = Mais uma bola com 70% de probabilidade
+            if (Math.random() > 0.7)
+            {
+                PU_NewBall = this.physics.add.image(brick.x, brick.y, 'assets', 'particle3');
+                PU_NewBall.setVelocityY(50);
+                this.physics.add.collider(PU_NewBall, paddle, newBall, null, this);
+            }
 
             if (bricks.countActive() === 0)
             {
                 resetLevel();
             }
+        }
+        
+        function newBall (pu, paddle)
+        {
+            if (ball.getData('onPaddle'))
+            {
+                if( Math.random() > 0.5 ) 
+                {
+                    ball.setVelocity(-75, -300);
+                } else {
+                    ball.setVelocity(75, -300)
+                }
+                ball.setData('onPaddle', false);
+            }
+
+            //pu.disableBody(true, true);
+            //pu.setActive(false).setVisible(false); // Este é muito louco
+            ball = this.physics.add.image(pu.x, pu.y, 'assets', 'ball2').setCollideWorldBounds(true).setBounce(1);
+            emitter.startFollow(ball);
+            
+            if( Math.random() > 0.5 ) 
+            {
+                ball.setVelocity(-75, -300);
+            } else {
+                ball.setVelocity(75, -300)
+            }
+                
+
+            pu.destroy();
+
+            this.physics.add.collider(ball, bricks, hitBrick, null, this);
+            this.physics.add.collider(ball, paddle, hitPaddle, null, this);
+            
+
         }
 
         function resetBall()
