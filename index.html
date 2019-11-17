@@ -103,7 +103,7 @@
 
             //Score
             scoreText = this.add.text(16, 16, 'Pontuação: 0', {
-                fontSize: '32px',
+                fontSize: '28px', //alerado o tamanho da fonte para melhor visualização
                 fill: '#FFF'
             });
 
@@ -134,7 +134,14 @@
 
             lifeCount = 2;
             lifeText = this.add.text(640, 16, 'Vidas: 2', {
-                fontSize: '32px',
+                fontSize: '28px', //alerado o tamanho da fonte para melhor visualização
+                fill: '#FFF'
+            });
+
+            //Fases
+            countLevels = 1;
+            levelText = this.add.text(350, 16, 'Fase Nº: 1',{
+                fontSize: '28px', 
                 fill: '#FFF'
             });
 
@@ -229,6 +236,7 @@
                 gameOverText.setVisible(true);
                 lifeText.setText(false);
                 openingText.setVisible(true);
+                ball.setVelocity(0,0); //Parando a bola quando as vidas acabarem
             }
 
             //Modificado para resetar o game, necessário usar a tecla UP
@@ -278,6 +286,8 @@
             }
 
             if (bricks.countActive() === 0) {
+                countLevels = countLevels + 1; //incrementado toda vez que todos os tijolos forem destruidos
+                levelText.setText('Fase Nº '+countLevels) //altera o texto do contador de fases
                 resetLevel();
             }
         }
