@@ -17,7 +17,6 @@
         Criado por Kenney
 
     -->
-
     <style>
         body {
             padding: 0;
@@ -144,19 +143,18 @@
                 this.physics.world.bounds.width / 2,
                 this.physics.world.bounds.height / 1.5,
                 'Press UP to Start', {
-                    fontFamily: 'Monaco, Courier, monospace',
                     fontSize: '30px',
                     fill: '#fff'
                 },
             );
-
+            
             openingText.setOrigin(0.5);
+
             //Gamer over criado
             gameOverText = this.add.text(
                 this.physics.world.bounds.width / 2,
                 this.physics.world.bounds.height / 2,
                 'Game Over', {
-                    fontFamily: 'Monaco, Courier, monospace',
                     fontSize: '50px',
                     fill: '#fff'
                 },
@@ -166,7 +164,6 @@
 
             // Invisível enquanto o player tiver vidas
             gameOverText.setVisible(false);
-
         }
 
         function update() {
@@ -189,7 +186,6 @@
                     openingText.setVisible(false);
                     ball.setVelocity(-75, -330);
                     ball.setData('onPaddle', false);
-
                 }
             }
 
@@ -248,7 +244,6 @@
                 scoreText.setText('Pontuação: ' + score);
                 gameOverText.setVisible(false);
             } 
-            
         }
 
         function hitPaddle(ball, paddle) {
@@ -308,12 +303,10 @@
                 ball.setVelocity(75, -300)
             }
 
-
             pu.destroy();
 
             this.physics.add.collider(ball, bricks, hitBrick, null, this);
             this.physics.add.collider(ball, paddle, hitPaddle, null, this);
-
 
         }
 
@@ -325,7 +318,6 @@
 
         function resetLevel() {
             resetBall();
-
             bricks.children.each(function (brick) {
 
                 brick.enableBody(false, 0, 0, true, true);
@@ -334,5 +326,4 @@
         }
     </script>
 </body>
-
 </html>
