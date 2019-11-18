@@ -329,7 +329,7 @@
 
             //pu.disableBody(true, true);
             //pu.setActive(false).setVisible(false); // Este é muito louco
-            ball = this.physics.add.image(pu.x, pu.y, 'assets', 'ball2').setCollideWorldBounds(true).setBounce(1);
+            ball = this.physics.add.image(pu.x, pu.y, 'assets', 'ball1').setCollideWorldBounds(true).setBounce(1);
             emitter.startFollow(ball);
 
             if (Math.random() > 0.5) {
