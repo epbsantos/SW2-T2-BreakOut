@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SW2 - T2 - Phaser BreakOut</title>
+
+    <script src="phaser.min.js"></script>
+
+    <!--
+
+        Assets do jogos disponĩvel em:
+        https://www.kenney.nl/assets/puzzle-pack
+
+        Criado por Kenney
+
+    -->
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            /*
+            display: block;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            width: 800px;
+            */
+
+            width: 100% !important;
+            height: 100vh !important;
+            cursor: none;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script>
+        
+        
+        
+    
+        var config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    //gravity: { y: 300 },
+                    debug: false
+                }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        var ball, bricks, paddle, boom;
+
+        var game = new Phaser.Game(config);
+
+        function preload()
+        {
+            this.load.atlas('assets','breakout.png','breakout.json');
+                        
+            this.load.spritesheet('boom', 'assets/sprites/explosion.png', { frameWidth: 64, frameHeight: 64, endFrame: 23 });
+            
+        }
+
+        function create()
+        {
+            
+            // gerador de explosão
+            var config = {
+            key: 'explode',
+            frames: this.anims.generateFrameNumbers('boom', { start: 0, end: 23, first: 23 }),
+            frameRate: 20    };
+
+            this.anims.create(config);
+
+            var boom = this.add.sprite(400, 300, 'boom');
+
+            boom.anims.play('explode');
+            
+
+            //  Enable world bounds, but disable the floor
+            this.physics.world.setBoundsCollision(true, true, true, false);
+
+            //  Create the bricks in a 10x6 grid
+            bricks = this.physics.add.staticGroup({
+                key: 'assets', frame: [ 'blue1', 'red1', 'green1', 'yellow1', 'silver1', 'purple1' ],
+                frameQuantity: 10,
+                gridAlign: { width: 10, height: 6, cellWidth: 64, cellHeight: 32, x: 112, y: 100 }
+            });
+
+            ball = this.physics.add.image(400, 500, 'assets', 'ball1').setCollideWorldBounds(true).setBounce(1);
+            ball.setData('onPaddle', true);
+            
+
+            paddle = this.physics.add.image(400, 550, 'assets', 'paddle1').setImmovable();
+            
+            boom = this.physics.add.image(400, 400, 'assets', 'boom').setCollideWorldBounds(true);
+                        
+
+            //  Our colliders
+            this.physics.add.collider(ball, bricks, hitBrick, null, this);
+            this.physics.add.collider(ball, paddle, hitPaddle, null, this);
+            this.physics.add.collider(ball, boom, hitBoom, null, this);
+            
+            
+            var blue1 = this.anims.create({ key: 'blue1', frames: this.anims.generateFrameNames('bricks', { prefix: 'blue1', end: 15, zeroPad: 4 }), repeat: -1 });
+    var red1 = this.anims.create({ key: 'red1', frames: this.anims.generateFrameNames('bricks', { prefix: 'red1', end: 6, zeroPad: 4 }), repeat: -1 });
+    var green1 = this.anims.create({ key: 'green1', frames: this.anims.generateFrameNames('bricks', { prefix: 'green1', end: 6, zeroPad: 4 }), repeat: -1 });
+    var yellow1 = this.anims.create({ key: 'yellow1', frames: this.anims.generateFrameNames('bricks', { prefix: 'yelow1', end: 14, zeroPad: 4 }), repeat: -1 });
+    var silver1 = this.anims.create({ key: 'silver1', frames: this.anims.generateFrameNames('bricks', { prefix: 'silver1', end: 14, zeroPad: 4 }), repeat: -1 });
+    var puple1 = this.anims.create({ key: 'purle11', frames: this.anims.generateFrameNames('bricks', { prefix: 'purple11', end: 14, zeroPad: 4 }), repeat: -1 });        
+
+    //  square added twice just to make sure there are more of them
+    var keys = [ 'red1', 'prism', 'ruby', 'square', 'square' ];
+
+    var x = 100;
+    var y = 100;
+
+    for (var i = 0; i < 35; i++)
+    {
+        this.add.sprite(x, y, 'gems').play(keys[Phaser.Math.Between(0, 4)]);
+
+        x += 100;
+
+        if (x === 800)
+        {
+            x = 100;
+            y += 100;
+        }
+    }
+
+    document.addEventListener('mouseup', function () {
+
+        if (square.paused)
+        {
+            square.resume();
+        }
+        else
+        {
+            square.pause();
+        }
+
+    });
+
+            
+              
+          
+        }
+
+        function update()
+        {
+            // (Keyboard) Input events
+            // Controle por setas
+            cursors = this.input.keyboard.createCursorKeys();            
+            
+            if(cursors.left.isDown && paddle.x > 52)
+            {
+                    paddle.setVelocityX(-330);   
+            }
+            else if(cursors.right.isDown && paddle.x < 748)
+            {
+                    paddle.setVelocityX(330);   
+
+            }
+            else{
+                paddle.setVelocityX(0);
+            }
+
+            //Para cima => libera a bola
+            if (cursors.up.isDown)
+            {
+                if (ball.getData('onPaddle'))
+                {
+                    ball.setVelocity(-75, -300);
+                    ball.setData('onPaddle', false);
+                }
+            }
+
+            //  Input events
+            this.input.on('pointermove', function (pointer) {
+
+                //  Keep the paddle within the game
+                paddle.x = Phaser.Math.Clamp(pointer.x, 52, 748);
+
+            }, this);
+
+            // Click do mouse => libera a bola
+            this.input.on('pointerup', function (pointer) {
+
+                if (ball.getData('onPaddle'))
+                {
+                    ball.setVelocity(-75, -300);
+                    ball.setData('onPaddle', false);
+                }
+
+            }, this);  
+            
+            if (ball.getData('onPaddle'))
+            {
+                ball.x = paddle.x;
+            }
+            
+            if (ball.y > 600)
+            {
+                resetBall();
+            }
+        }
+
+
+        function hitPaddle(ball, paddle)
+        {
+            var diff = 0;
+
+            if (ball.x < paddle.x)
+            {
+                //  Ball is on the left-hand side of the paddle
+                diff = paddle.x - ball.x;
+                ball.setVelocityX(-10 * diff);
+            }
+            else if (ball.x > paddle.x)
+            {
+                //  Ball is on the right-hand side of the paddle
+                diff = ball.x -paddle.x;
+                ball.setVelocityX(10 * diff);
+            }
+            else
+            {
+                //  Ball is perfectly in the middle
+                //  Add a little random X to stop it bouncing straight up!
+                ball.setVelocityX(2 + Math.random() * 8);
+            }
+        }
+
+        function hitBrick(ball, brick)
+        {
+            brick.disableBody(true, true);
+
+            if (bricks.countActive() === 0)
+            {
+                resetLevel();
+            }
+        }
+
+        function resetBall()
+        {
+            ball.setVelocity(0);
+            ball.setPosition(paddle.x, 500);
+            ball.setData('onPaddle', true);
+        }
+
+        function resetLevel()
+        {
+            resetBall();
+
+            bricks.children.each(function (brick) {
+
+                brick.enableBody(false, 0, 0, true, true);
+
+            });
+        }
+       
+    
+    </script>
+    
+</body>
+</html>
