@@ -66,6 +66,7 @@
         var particles, emitter;
         var scoreText;
         var score = 0;
+        var hitCount = [];
 
         var game = new Phaser.Game(config);
 
@@ -272,11 +273,35 @@
             }
         }
 
-        function hitBrick(ball, brick) {
-            brick.disableBody(true, true);
-            // brick.kill();
-            score += 10;
-            scoreText.setText('Pontuação: ' + score);
+        function hitBrick(ball, brick, condition = 0) {
+            //salva a posição do brick atingido para adicionar a mecanica de segundo hit
+            //necessario para destruir um brick.
+            
+            brick.position = brick.x.toString().concat(brick.y.toString);
+            
+            //se a posição já foi salva, a destruição é garantida pela condição 1.
+            if(hitCount.indexOf(brick.position) > 1) {
+                condition = 1;
+            }
+            
+            //caso contrário, a posição é salva.
+            else {
+                hitCount.push(brick.position);
+            }
+            
+            //adiciona uma pequena chance de um brick precisar de um segundo hit para ser destruído.
+            if(condition >= Math.round(Math.random() * 0.8)) {
+                brick.disableBody(true, true);
+                score += 10;
+                scoreText.setText('Pontuação: ' + score);
+            }
+            
+            //alterei a mecanica do score para somar 5 pontos ao acertar sem destruir
+            //e somar 10 pontos ao destruir.
+            else {
+                score += 5;
+                scoreText.setText('Pontuação: ' + score);
+            }
 
             // PowerUp = Mais uma bola com 70% de probabilidade
             if (Math.random() > 0.7) {
@@ -328,6 +353,7 @@
 
         function resetLevel() {
             resetBall();
+            hitCount = [];
             bricks.children.each(function (brick) {
 
                 brick.enableBody(false, 0, 0, true, true);
