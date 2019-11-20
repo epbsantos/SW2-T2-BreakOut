@@ -67,7 +67,7 @@
         var scoreText;
         var score = 0;
         var hitCount = [];
-
+        var timeText;
         var game = new Phaser.Game(config);
 
         function preload() {
@@ -77,7 +77,9 @@
         function create() {
             //  Enable world bounds, but disable the floor
             this.physics.world.setBoundsCollision(true, true, true, false);
-
+            
+            timeText = this.add.text(480,580);
+            
             //  Create the bricks in a 10x6 grid
             bricks = this.physics.add.staticGroup({
                 key: 'assets',
@@ -174,7 +176,7 @@
             gameOverText.setVisible(false);
         }
 
-        function update() {
+        function update(time, delta) {
 
             // (Keyboard) Input events
             // Controle por setas
@@ -231,6 +233,8 @@
                 lifeText.setText('Vidas: ' + lifeCount); // altera o texto do contador de vidas;
                 gameOverText.setVisible(false);
             }
+            
+
 
 
             if (lifeCount < 0) { // Condição do game Over/ 
@@ -245,7 +249,8 @@
 
                 resetLevel();
                 resetBall();
-
+                
+                
                 lifeCount = 2; //reseta o contador de vida
                 lifeText.setText('Vidas: ' + lifeCount);
 
@@ -253,6 +258,7 @@
                 scoreText.setText('Pontuação: ' + score);
                 gameOverText.setVisible(false);
             } 
+            timeText.setText('Tempo no Jogo: ' + time);
         }
 
         function hitPaddle(ball, paddle) {
@@ -357,9 +363,12 @@
             bricks.children.each(function (brick) {
 
                 brick.enableBody(false, 0, 0, true, true);
+                 
 
             });
         }
+
+
     </script>
 </body>
 </html>
