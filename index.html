@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SW2 - T2 - Phaser BreakOut</title>
+    <link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap" rel="stylesheet">
 
     <script src="phaser.min.js"></script>
 
@@ -83,7 +84,8 @@
             //  Create the bricks in a 10x6 grid
             bricks = this.physics.add.staticGroup({
                 key: 'assets',
-                frame: ['blue1', 'red1', 'green1', 'yellow1', 'silver1', 'purple1'],
+                frame: ['blue', 'red2', 'green1', 'yellow2', 'silver1', 'purple1'],
+                //frame: ['blue1', 'red1', 'green1', 'yellow1', 'silver1', 'purple1'],
                 frameQuantity: 10,
                 gridAlign: {
                     width: 10,
@@ -107,7 +109,8 @@
             //Score
             scoreText = this.add.text(16, 16, 'Pontuação: 0', {
                 fontSize: '28px', //alerado o tamanho da fonte para melhor visualização
-                fill: '#FFF'
+                fontFamily: 'Permanent Marker, cursive',
+                fill: '#B22222'
             });
 
             //Rastro na bola (usando sprite da bola)
@@ -138,14 +141,16 @@
             lifeCount = 2;
             lifeText = this.add.text(640, 16, 'Vidas: 2', {
                 fontSize: '28px', //alerado o tamanho da fonte para melhor visualização
-                fill: '#FFF'
+                fontFamily: 'Permanent Marker, cursive',
+                fill: '#B22222'
             });
 
             //Fases
             countLevels = 1;
             levelText = this.add.text(350, 16, 'Fase Nº: 1',{
                 fontSize: '28px', 
-                fill: '#FFF'
+                fontFamily: 'Permanent Marker, cursive',
+                fill: '#B22222'
             });
 
             // Press Start Criado
@@ -153,6 +158,7 @@
                 this.physics.world.bounds.width / 2,
                 this.physics.world.bounds.height / 1.5,
                 'Press UP to Start', {
+                    fontFamily: 'Permanent Marker, cursive',
                     fontSize: '30px',
                     fill: '#fff'
                 },
@@ -165,8 +171,9 @@
                 this.physics.world.bounds.width / 2,
                 this.physics.world.bounds.height / 2,
                 'Game Over', {
-                    fontSize: '50px',
-                    fill: '#fff'
+                    fontSize: '60px',
+                    fontFamily: 'Permanent Marker, cursive',
+                    fill: '#B22222'
                 },
             );
 
