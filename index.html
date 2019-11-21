@@ -241,7 +241,8 @@
                 gameOverText.setVisible(true);
                 lifeText.setText(false);
                 openingText.setVisible(true);
-                ball.setVelocity(0,0); //Parando a bola quando as vidas acabarem
+                ball.setVelocity(); //Para a bola quando as vidas acabarem
+                resetLevel();
             }
 
             //Modificado para resetar o game, necessário usar a tecla UP
@@ -258,7 +259,9 @@
                 scoreText.setText('Pontuação: ' + score);
                 gameOverText.setVisible(false);
             } 
-            timeText.setText('Tempo no Jogo: ' + time);
+            if(lifeCount>0){
+            timeText.setText('Tempo no Jogo: ' + Math.floor((time.toFixed(0)/1000))+'s');
+            }
         }
 
         function hitPaddle(ball, paddle) {
