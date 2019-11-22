@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SW2 - T2 - Phaser BreakOut</title>
+    <link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap" rel="stylesheet">
 
     <script src="phaser.min.js"></script>
 
@@ -22,6 +23,7 @@
             padding: 0;
             margin: 0;
             overflow: hidden;
+            
         }
 
         canvas {
@@ -43,7 +45,11 @@
 
 <body>
     <script>
-        alert("Instruções:\nIniciar o jogo: Clique no botão direito do mouse ou utilize a seta ↑.\nMover a base: Mexa o mouse de um lado para outro ou utilize as setas ← →.")
+        
+        alert("Instruções:\nIniciar o jogo: Clique com o botão direito do mouse ou utilize a seta ↑.\nMover a base: Mexa o mouse de um lado para outro ou utilize as setas ← →.");
+        
+        
+        
         var config = {
             type: Phaser.AUTO,
             width: 800,
@@ -68,7 +74,7 @@
         var scoreText;
         var score = 0;
         var hitCount = [];
-
+        var timeText;
         var game = new Phaser.Game(config);
 
         function preload() {
@@ -78,11 +84,14 @@
         function create() {
             //  Enable world bounds, but disable the floor
             this.physics.world.setBoundsCollision(true, true, true, false);
-
+            
+            timeText = this.add.text(480,580);
+            
             //  Create the bricks in a 10x6 grid
             bricks = this.physics.add.staticGroup({
                 key: 'assets',
-                frame: ['blue1', 'red1', 'green1', 'yellow1', 'silver1', 'purple1'],
+                frame: ['blue', 'red2', 'green1', 'yellow2', 'silver1', 'purple1'],
+                //frame: ['blue1', 'red1', 'green1', 'yellow1', 'silver1', 'purple1'],
                 frameQuantity: 10,
                 gridAlign: {
                     width: 10,
@@ -106,7 +115,8 @@
             //Score
             scoreText = this.add.text(16, 16, 'Pontuação: 0', {
                 fontSize: '28px', //alerado o tamanho da fonte para melhor visualização
-                fill: '#FFF'
+                fontFamily: 'Permanent Marker, cursive',
+                fill: '#B22222'
             });
 
             //Rastro na bola (usando sprite da bola)
@@ -137,14 +147,16 @@
             lifeCount = 2;
             lifeText = this.add.text(640, 16, 'Vidas: 2', {
                 fontSize: '28px', //alerado o tamanho da fonte para melhor visualização
-                fill: '#FFF'
+                fontFamily: 'Permanent Marker, cursive',
+                fill: '#B22222'
             });
 
             //Fases
             countLevels = 1;
             levelText = this.add.text(350, 16, 'Fase Nº: 1',{
                 fontSize: '28px', 
-                fill: '#FFF'
+                fontFamily: 'Permanent Marker, cursive',
+                fill: '#B22222'
             });
 
             // Press Start Criado
@@ -152,6 +164,7 @@
                 this.physics.world.bounds.width / 2,
                 this.physics.world.bounds.height / 1.5,
                 'Press UP to Start', {
+                    fontFamily: 'Permanent Marker, cursive',
                     fontSize: '30px',
                     fill: '#fff'
                 },
@@ -164,8 +177,9 @@
                 this.physics.world.bounds.width / 2,
                 this.physics.world.bounds.height / 2,
                 'Game Over', {
-                    fontSize: '50px',
-                    fill: '#fff'
+                    fontSize: '60px',
+                    fontFamily: 'Permanent Marker, cursive',
+                    fill: '#B22222'
                 },
             );
 
@@ -175,7 +189,7 @@
             gameOverText.setVisible(false);
         }
 
-        function update() {
+        function update(time, delta) {
 
             // (Keyboard) Input events
             // Controle por setas
@@ -232,13 +246,16 @@
                 lifeText.setText('Vidas: ' + lifeCount); // altera o texto do contador de vidas;
                 gameOverText.setVisible(false);
             }
+            
+
 
 
             if (lifeCount < 0) { // Condição do game Over/ 
                 gameOverText.setVisible(true);
                 lifeText.setText(false);
                 openingText.setVisible(true);
-                ball.setVelocity(0,0); //Parando a bola quando as vidas acabarem
+                ball.setVelocity(); //Para a bola quando as vidas acabarem
+                resetLevel();
             }
 
             //Modificado para resetar o game, necessário usar a tecla UP
@@ -246,7 +263,8 @@
 
                 resetLevel();
                 resetBall();
-
+                
+                
                 lifeCount = 2; //reseta o contador de vida
                 lifeText.setText('Vidas: ' + lifeCount);
 
@@ -254,6 +272,9 @@
                 scoreText.setText('Pontuação: ' + score);
                 gameOverText.setVisible(false);
             } 
+            if(lifeCount>0){
+            timeText.setText('Tempo no Jogo: ' + Math.floor((time.toFixed(0)/1000))+'s');
+            }
         }
 
         function hitPaddle(ball, paddle) {
@@ -358,9 +379,12 @@
             bricks.children.each(function (brick) {
 
                 brick.enableBody(false, 0, 0, true, true);
+                 
 
             });
         }
+
+
     </script>
 </body>
 </html>
