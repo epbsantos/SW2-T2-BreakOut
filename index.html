@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SW2 - T2 - Phaser BreakOut</title>
-    <link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap" rel="stylesheet">
 
     <script src="phaser.min.js"></script>
 
@@ -18,12 +16,12 @@
         Criado por Kenney
 
     -->
+
     <style>
         body {
             padding: 0;
             margin: 0;
             overflow: hidden;
-            
         }
 
         canvas {
@@ -42,13 +40,8 @@
         }
     </style>
 </head>
-
 <body>
     <script>
-        
-        alert("Instruções:\nIniciar o jogo: Clique com o botão direito do mouse ou utilize a seta ↑.\nMover a base: Mexa o mouse de um lado para outro ou utilize as setas ← →.");
-        
-        
         var config = {
             type: Phaser.AUTO,
             width: 800,
@@ -71,35 +64,25 @@
         var PU_NewBall;
         var particles, emitter;
         var scoreText;
-        var score = 0;
-        var hitCount = [];
-        var timeText;
+        var score  = 0;
+
         var game = new Phaser.Game(config);
 
-        function preload() {
+        function preload()
+        {
             this.load.atlas('assets', 'breakout.png', 'breakout.json');
         }
 
-        function create() {
+        function create()
+        {
             //  Enable world bounds, but disable the floor
             this.physics.world.setBoundsCollision(true, true, true, false);
-            
-            timeText = this.add.text(480,580);
-            
+
             //  Create the bricks in a 10x6 grid
             bricks = this.physics.add.staticGroup({
-                key: 'assets',
-                frame: ['blue', 'red2', 'green1', 'yellow2', 'silver1', 'purple1'],
-                //frame: ['blue1', 'red1', 'green1', 'yellow1', 'silver1', 'purple1'],
+                key: 'assets', frame: [ 'blue1', 'red1', 'green1', 'yellow1', 'silver1', 'purple1' ],
                 frameQuantity: 10,
-                gridAlign: {
-                    width: 10,
-                    height: 6,
-                    cellWidth: 64,
-                    cellHeight: 32,
-                    x: 112,
-                    y: 100
-                }
+                gridAlign: { width: 10, height: 6, cellWidth: 64, cellHeight: 32, x: 112, y: 100 }
             });
 
             ball = this.physics.add.image(400, 500, 'assets', 'ball1').setCollideWorldBounds(true).setBounce(1);
@@ -110,102 +93,53 @@
             //  Our colliders
             this.physics.add.collider(ball, bricks, hitBrick, null, this);
             this.physics.add.collider(ball, paddle, hitPaddle, null, this);
-
+          
             //Score
-            scoreText = this.add.text(16, 16, 'Pontuação: 0', {
-                fontSize: '28px', //alerado o tamanho da fonte para melhor visualização
-                fontFamily: 'Permanent Marker, cursive',
-                fill: '#B22222'
-            });
-
+            scoreText = this.add.text(16, 16, 'Pontuação: 0', { fontSize: '32px', fill: '#FFF' });
+            
             //Rastro na bola (usando sprite da bola)
-            particles = this.add.particles('assets', 'ball1');
+            particles = this.add.particles('assets','ball1');
 
             emitter = particles.createEmitter({
                 lifespan: 1000,
-                speedX: {
-                    min: -10,
-                    max: 10
-                },
-                speedY: {
-                    min: 0,
-                    max: 45
-                },
-                scale: {
-                    start: 0.8,
-                    end: 0.1
-                },
+                speedX: { min: -10, max: 10},
+                speedY: { min: 0, max: 45 },
+                scale: { start: 0.8, end:  0.1 },
                 frameQuantity: 64,
                 blendMode: 'ADD'
             });
 
             emitter.startFollow(ball);
-
-            //Vidas
-
-            lifeCount = 2;
-            lifeText = this.add.text(640, 16, 'Vidas: 2', {
-                fontSize: '28px', //alerado o tamanho da fonte para melhor visualização
-                fontFamily: 'Permanent Marker, cursive',
-                fill: '#B22222'
-            });
-
-            //Fases
-            countLevels = 1;
-            levelText = this.add.text(350, 16, 'Fase Nº: 1',{
-                fontSize: '28px', 
-                fontFamily: 'Permanent Marker, cursive',
-                fill: '#B22222'
-            });
-
-            // Press Start Criado
-            openingText = this.add.text(
-                this.physics.world.bounds.width / 2,
-                this.physics.world.bounds.height / 1.5,
-                'Press UP to Start', {
-                    fontFamily: 'Permanent Marker, cursive',
-                    fontSize: '30px',
-                    fill: '#fff'
-                },
-            );
             
-            openingText.setOrigin(0.5);
-
-            //Gamer over criado
-            gameOverText = this.add.text(
-                this.physics.world.bounds.width / 2,
-                this.physics.world.bounds.height / 2,
-                'Game Over', {
-                    fontSize: '60px',
-                    fontFamily: 'Permanent Marker, cursive',
-                    fill: '#B22222'
-                },
-            );
-
-            gameOverText.setOrigin(0.5);
-
-            // Invisível enquanto o player tiver vidas
-            gameOverText.setVisible(false);
+            //Vidas
+            
+            lifeCount = 2;
+            lifeText = this.add.text(640, 16, 'Vidas: 2', { fontSize: '32px', fill: 'red'});
         }
 
-        function update(time, delta) {
-
+        function update()
+        {
             // (Keyboard) Input events
             // Controle por setas
-            cursors = this.input.keyboard.createCursorKeys();
-
-            if (cursors.left.isDown && paddle.x > 64) {
-                paddle.setVelocityX(-450);
-            } else if (cursors.right.isDown && paddle.x < 736) {
-                paddle.setVelocityX(450);
-            } else {
+            cursors = this.input.keyboard.createCursorKeys();            
+            
+            if(cursors.left.isDown && paddle.x > 64)
+            {
+                    paddle.setVelocityX(-450);   
+            }
+            else if(cursors.right.isDown && paddle.x < 736)
+            {
+                    paddle.setVelocityX(450);
+            }
+            else{
                 paddle.setVelocityX(0);
             }
-            //Para cima => libera a bola 
-            //Adicionado o Press Start
-            if (cursors.up.isDown) {
-                if (ball.getData('onPaddle')) {
-                    openingText.setVisible(false);
+
+            //Para cima => libera a bola
+            if (cursors.up.isDown)
+            {
+                if (ball.getData('onPaddle'))
+                {
                     ball.setVelocity(-75, -330);
                     ball.setData('onPaddle', false);
                 }
@@ -220,127 +154,100 @@
             }, this);
 
             // Click do mouse => libera a bola
-            //Adicionado o Press Start
             this.input.on('pointerup', function (pointer) {
 
-                if (ball.getData('onPaddle')) {
-                    if (Math.random() > 0.5) {
+                if (ball.getData('onPaddle'))
+                {
+                    if( Math.random() > 0.5 ) 
+                    {
                         ball.setVelocity(-75, -300);
                     } else {
                         ball.setVelocity(75, -300)
                     }
                     ball.setData('onPaddle', false);
                 }
-                openingText.setVisible(false);
-            }, this);
 
-            if (ball.getData('onPaddle')) {
+            }, this);  
+            
+            if (ball.getData('onPaddle'))
+            {
                 ball.x = paddle.x;
             }
-
+            
             if (ball.y > 600 && lifeCount >= 0) // modifiquei essa condicional para utilizar o sistema de vidas;
             {
                 resetBall();
-                lifeCount--; //decrementa o contador cada vez que a bola estiver na posição y > 600;
-                lifeText.setText('Vidas: ' + lifeCount); // altera o texto do contador de vidas;
-                gameOverText.setVisible(false);
+                lifeCount --; //decrementa o contador cada vez que a bola estiver na posição y > 600;
+                lifeText.setText('Vidas: '+lifeCount); // altera o texto do contador de vidas;
+                
             }
             
-
-
-
-            if (lifeCount < 0) { // Condição do game Over/ 
-                gameOverText.setVisible(true);
-                lifeText.setText(false);
-                openingText.setVisible(true);
-                ball.setVelocity(); //Para a bola quando as vidas acabarem
-                resetLevel();
-            }
-
-            //Modificado para resetar o game, necessário usar a tecla UP
-            if (lifeCount < 0 && cursors.up.isDown) {
-
+            if (lifeCount < 0) { // modifiquei aqui também para resetar tudo;
+                
                 resetLevel();
                 resetBall();
                 
-                
                 lifeCount = 2; //reseta o contador de vida
-                lifeText.setText('Vidas: ' + lifeCount);
-
+                lifeText.setText('Vidas: '+ lifeCount);
+                
                 score = 0; //reseta a pontuação
-                scoreText.setText('Pontuação: ' + score);
-                gameOverText.setVisible(false);
-            } 
-            if(lifeCount>0){
-            timeText.setText('Tempo no Jogo: ' + Math.floor((time.toFixed(0)/1000))+'s');
+                scoreText.setText('Pontuação: ' +score);
             }
+            
+            
         }
 
-        function hitPaddle(ball, paddle) {
+        function hitPaddle(ball, paddle)
+        {
             var diff = 0;
 
-            if (ball.x < paddle.x) {
+            if (ball.x < paddle.x)
+            {
                 //  Ball is on the left-hand side of the paddle
                 diff = paddle.x - ball.x;
                 ball.setVelocityX(-10 * diff);
-            } else if (ball.x > paddle.x) {
+            }
+            else if (ball.x > paddle.x)
+            {
                 //  Ball is on the right-hand side of the paddle
-                diff = ball.x - paddle.x;
+                diff = ball.x -paddle.x;
                 ball.setVelocityX(10 * diff);
-            } else {
+            }
+            else
+            {
                 //  Ball is perfectly in the middle
                 //  Add a little random X to stop it bouncing straight up!
                 ball.setVelocityX(2 + Math.random() * 8);
             }
         }
 
-        function hitBrick(ball, brick, condition = 0) {
-            //salva a posição do brick atingido para adicionar a mecanica de segundo hit
-            //necessario para destruir um brick.
+        function hitBrick(ball, brick)
+        {
+            brick.disableBody(true, true);
+           // brick.kill();
+            score += 10;
+            scoreText.setText('Pontuação: '+score);
             
-            brick.position = brick.x.toString().concat(brick.y.toString);
-            
-            //se a posição já foi salva, a destruição é garantida pela condição 1.
-            if(hitCount.indexOf(brick.position) > 1) {
-                condition = 1;
-            }
-            
-            //caso contrário, a posição é salva.
-            else {
-                hitCount.push(brick.position);
-            }
-            
-            //adiciona uma pequena chance de um brick precisar de um segundo hit para ser destruído.
-            if(condition >= Math.round(Math.random() * 0.8)) {
-                brick.disableBody(true, true);
-                score += 10;
-                scoreText.setText('Pontuação: ' + score);
-            }
-            
-            //alterei a mecanica do score para somar 5 pontos ao acertar sem destruir
-            //e somar 10 pontos ao destruir.
-            else {
-                score += 5;
-                scoreText.setText('Pontuação: ' + score);
-            }
-
             // PowerUp = Mais uma bola com 70% de probabilidade
-            if (Math.random() > 0.7) {
+            if (Math.random() > 0.7)
+            {
                 PU_NewBall = this.physics.add.image(brick.x, brick.y, 'assets', 'particle3');
                 PU_NewBall.setVelocityY(50);
                 this.physics.add.collider(PU_NewBall, paddle, newBall, null, this);
             }
 
-            if (bricks.countActive() === 0) {
-                countLevels = countLevels + 1; //incrementado toda vez que todos os tijolos forem destruidos
-                levelText.setText('Fase Nº '+countLevels) //altera o texto do contador de fases
+            if (bricks.countActive() === 0)
+            {
                 resetLevel();
             }
         }
-
-        function newBall(pu, paddle) {
-            if (ball.getData('onPaddle')) {
-                if (Math.random() > 0.5) {
+        
+        function newBall (pu, paddle)
+        {
+            if (ball.getData('onPaddle'))
+            {
+                if( Math.random() > 0.5 ) 
+                {
                     ball.setVelocity(-75, -300);
                 } else {
                     ball.setVelocity(75, -300)
@@ -350,40 +257,43 @@
 
             //pu.disableBody(true, true);
             //pu.setActive(false).setVisible(false); // Este é muito louco
-            ball = this.physics.add.image(pu.x, pu.y, 'assets', 'ball1').setCollideWorldBounds(true).setBounce(1);
+            ball = this.physics.add.image(pu.x, pu.y, 'assets', 'ball2').setCollideWorldBounds(true).setBounce(1);
             emitter.startFollow(ball);
-
-            if (Math.random() > 0.5) {
+            
+            if( Math.random() > 0.5 ) 
+            {
                 ball.setVelocity(-75, -300);
             } else {
                 ball.setVelocity(75, -300)
             }
+                
 
             pu.destroy();
 
             this.physics.add.collider(ball, bricks, hitBrick, null, this);
             this.physics.add.collider(ball, paddle, hitPaddle, null, this);
+            
 
         }
 
-        function resetBall() {
+        function resetBall()
+        {
             ball.setVelocity(0);
             ball.setPosition(paddle.x, 500);
             ball.setData('onPaddle', true);
         }
 
-        function resetLevel() {
+        function resetLevel()
+        {
             resetBall();
-            hitCount = [];
+
             bricks.children.each(function (brick) {
 
                 brick.enableBody(false, 0, 0, true, true);
-                 
 
             });
         }
-
-
-    </script>
+       
+    </script>  
 </body>
 </html>
